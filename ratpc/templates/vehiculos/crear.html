@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %} Agregar nuevo vehiculo {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        Crear un vehiculo
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del vehiculo</h4>
+        {% include 'vehiculos/form.html' %}
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+{%endblock %}

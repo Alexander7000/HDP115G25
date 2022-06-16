@@ -6,12 +6,58 @@
 
 <div class="jumbotron">
     <h1 class="display-3">Bienvenidos HDP</h1>
-    <p class="lead">Empezar a ingresar libros</p>
     <hr class="my-2">
-    <p>More info</p>
-    <p class="lead">
-        <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Empezar</a>
-    </p>
+    <br>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title">Gestionar vehiculo </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">En este apartado puedes crear, modificar y eliminar un vehiculo de carga pesada</p>
+                    <br>
+                    <p class="lead">
+                        <a class="btn btn-light btn-lg" href="{% url 'vehiculos' %}" role="button">Empezar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="card text-dark bg-white mb-3 text-center" style="max-width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title">Crear informe </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        En este apartado puedes crear un informe para registrar
+                        el ingreso o salida de mercancias por el pais
+                    </p>
+                    <br>
+                    <p class="lead">
+                        <a class="btn btn-dark btn-lg" href="Jumbo action link" role="button">Empezar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm">
+            <div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;">
+                <div class="card-header">
+                    <h5 class="card-title">Gestionar trasnportista </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">En este apartado puedes crear, modificar y eliminar un transportista</p>
+                    <br>
+                    <p class="lead">
+                        <a class="btn btn-light btn-lg" href="Jumbo action link" role="button">Empezar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {%endblock %}

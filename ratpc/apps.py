@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class LibreriaConfig(AppConfig):
+class RatpcConfig(AppConfig):
     name = 'ratpc'

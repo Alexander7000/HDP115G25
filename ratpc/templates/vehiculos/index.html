@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de vehiculos {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crear_ve' %}" role="button">Agregar nuevo vehiculo</a>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Vehiculos</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Cantidad asientos</th>
+                <th>Color</th>
+                <th>Nacionalidad</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for vehiculo in vehiculos%}
+                    <tr>
+                        <td> {{vehiculo.id_vehiculo}} </td>
+                        <td> {{vehiculo.placa}} </td>
+                        <td> {{vehiculo.modelo}} </td>
+                        <td> {{vehiculo.ano}} </td>
+                        <td> {{vehiculo.cant_asientos}} </td>
+                        <td> {{vehiculo.color}} </td>
+                        <td> {{vehiculo.id_nacionalidad}} </td>
+                        <td>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editar_ve' vehiculo.id_vehiculo %}" role="button">Editar</a>
+                            |
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_ve' vehiculo.id_vehiculo %}" role="button">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{%endblock %}

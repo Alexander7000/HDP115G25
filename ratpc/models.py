@@ -72,6 +72,7 @@ class Vehiculo(models.Model):
     class Meta:
         db_table = 'vehiculo'
         unique_together = (('id_nacionalidad', 'placa'),)
+        ordering = ["id_vehiculo"]
 
 
 class Informe(models.Model):

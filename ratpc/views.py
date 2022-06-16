@@ -10,8 +10,8 @@ from .forms import LibroForm
 def inicio(request):
     return render(request, 'paginas/inicio.html')
 
-def nosotros(request):
-    return render(request, 'paginas/nosotros.html')
+def salir(request):
+    return render(request, 'paginas/salir.html')
 
 #libros
 def libros(request):

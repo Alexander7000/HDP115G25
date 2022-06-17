@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %} Agregar nuevo informe {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        Crear un informe
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del informe</h4>
+        {% include 'informes/form.html' %}
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+{%endblock %}

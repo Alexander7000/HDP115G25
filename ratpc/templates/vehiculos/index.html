@@ -14,25 +14,23 @@
         <table class="table">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Placa</th>
+                <th>Nacionalidad</th>
                 <th>Modelo</th>
                 <th>Año</th>
                 <th>Cantidad asientos</th>
                 <th>Color</th>
-                <th>Nacionalidad</th>
             </tr>
             </thead>
             <tbody>
                 {% for vehiculo in vehiculos%}
                     <tr>
-                        <td> {{vehiculo.id_vehiculo}} </td>
                         <td> {{vehiculo.placa}} </td>
+                        <td> {{vehiculo.id_nacionalidad}} </td>
                         <td> {{vehiculo.modelo}} </td>
                         <td> {{vehiculo.ano}} </td>
                         <td> {{vehiculo.cant_asientos}} </td>
                         <td> {{vehiculo.color}} </td>
-                        <td> {{vehiculo.id_nacionalidad}} </td>
                         <td>
                             <a name="" id="" class="btn btn-info" href="{% url 'editar_ve' vehiculo.id_vehiculo %}" role="button">Editar</a>
                             |

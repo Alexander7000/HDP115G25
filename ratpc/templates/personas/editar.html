@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %} Editar persona {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        Editar informacion de la persona
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Datos de la persona</h4>
+        {% include 'personas/form.html' %}
+    </div>
+    <div class="card-footer text-muted">
+        Footer
+    </div>
+</div>
+
+{%endblock %}

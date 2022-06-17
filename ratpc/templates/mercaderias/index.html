@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de mercaderias {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crear_me' %}" role="button">Agregar nueva mercaderia</a>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Mercaderias</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Cantidad</th>
+                <th>procedencia</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for mercaderia in mercaderias%}
+                    <tr>
+                        <td> {{mercaderia.id_mercaderia}} </td>
+                        <td> {{mercaderia.nombre_mercaderia}} </td>
+                        <td> {{mercaderia.categoria}} </td>
+                        <td> {{mercaderia.cantidad}} </td>
+                        <td> {{mercaderia.procedencia}} </td>
+                        <td>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editar_me' mercaderia.id_mercaderia %}" role="button">Editar</a>
+                            |
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_me' mercaderia.id_mercaderia %}" role="button">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{%endblock %}

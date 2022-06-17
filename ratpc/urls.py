@@ -1,5 +1,6 @@
-﻿from django.urls import path
+﻿from django.urls import path, include
 from . import views
+from django.contrib.auth.views import LoginView
 
 # enlaces para mostrar las vistas (URLS)
 
@@ -36,4 +37,8 @@ urlpatterns = [
     path('usuarios/crear', views.crear_us, name='crear_us'),
     path('usuarios/<int:id>', views.eliminar_us, name='eliminar_us'),
     path('usuarios/editar/<int:id>', views.editar_us, name='editar_us'),
+
+
+    path('accounts/',include('django.contrib.auth.urls')),
+    path('salir/', views.salir , name = 'salir')
 ]

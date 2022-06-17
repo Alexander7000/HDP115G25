@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from django.urls import reverse_lazy
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +25,7 @@ SECRET_KEY = 'a-_isg3x^jh$4oic_@d@v74mg*h9_i*9@sbk2ocbc(j)dbp&m-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','192.168.1.9','192.168.131.60','192.168.1.4']
+ALLOWED_HOSTS = ['localhost','192.168.1.9','192.168.131.60','192.168.1.3']
 
 
 # Application definition
@@ -119,7 +119,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+LOGIN_REDIRECT_URL = reverse_lazy('paginas:inicio')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

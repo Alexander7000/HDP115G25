@@ -18,7 +18,7 @@ urlpatterns = [
     path('vehiculos/editar/<int:id>', views.editar_ve, name='editar_ve'),
 
     path('transportistas', views.transportistas, name='transportistas'),
-    path('transportistas/crear', views.crear_tr, name='crear_tr'),
+    path('transportistas/crear/<int:id>', views.crear_tr, name='crear_tr'),
     path('transportistas/<int:id>', views.eliminar_tr, name='eliminar_tr'),
     path('transportistas/editar/<int:id>', views.editar_tr, name='editar_tr'),
 

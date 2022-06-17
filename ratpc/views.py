@@ -21,8 +21,8 @@ def personas(request):
 def crear_pe(request):
     formulario = PersonaForm(request.POST or None)
     if formulario.is_valid():
-        formulario.save()
-        return redirect('personas')
+        x = formulario.save() #obtiene el objeto
+        return redirect('crear_tr', x.id_persona)
     return render(request, 'personas/crear.html', {'formulario': formulario})
 
 def editar_pe(request, id):
@@ -70,10 +70,13 @@ def transportistas(request):
     transportistas = Transportista.objects.all()
     return render(request, 'transportistas/index.html', {'transportistas': transportistas})
 
-def crear_tr(request):
+def crear_tr(request, id):
     formulario = TransportistaForm(request.POST or None)
     if formulario.is_valid():
-        formulario.save()
+        persona = Persona.objects.get(id_persona=id)
+        transaportista = formulario.save(commit=False)
+        transaportista.id_persona = persona
+        transaportista.save()
         return redirect('transportistas')
     return render(request, 'transportistas/crear.html', {'formulario': formulario})
 

@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia, Usuario
 
 class PersonaForm(forms.ModelForm):
@@ -14,7 +15,8 @@ class VehiculoForm(forms.ModelForm):
 class TransportistaForm(forms.ModelForm):
     class Meta:
         model = Transportista
-        fields = '__all__'
+        fields = ['fecha_nacimiento','direccion','tipo_licencia']
+
 
 class InformeForm(forms.ModelForm):
     class Meta:

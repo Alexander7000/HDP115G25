@@ -30,13 +30,13 @@ def editar_pe(request, id):
     formulario = PersonaForm(request.POST or None, instance=persona)
     if formulario.is_valid() and request.POST:
         formulario.save()
-        return redirect('personas')
+        return redirect('editar_tr',id)
     return render(request, 'personas/editar.html', {'formulario': formulario})
 
 def eliminar_pe(request, id):
     persona = Persona.objects.get(id_persona=id)
     persona.delete()
-    return redirect('personas')
+    return redirect('transportistas')
 
 
 #vehiculoss
@@ -81,7 +81,7 @@ def crear_tr(request, id):
     return render(request, 'transportistas/crear.html', {'formulario': formulario})
 
 def editar_tr(request, id):
-    transportista = Transportista.objects.get(id_transportista=id)
+    transportista = Transportista.objects.get(id_persona=id)
     formulario = TransportistaForm(request.POST or None, instance=transportista)
     if formulario.is_valid() and request.POST:
         formulario.save()
@@ -90,8 +90,9 @@ def editar_tr(request, id):
 
 def eliminar_tr(request, id):
     transportista = Transportista.objects.get(id_transportista=id)
+    id = transportista.id_persona
     transportista.delete()
-    return redirect('transportistas')
+    return redirect('eliminar_pe', id.id_persona)
 
 
 #informe
@@ -102,9 +103,8 @@ def informes(request):
 def crear_in(request):
     formulario = InformeForm(request.POST or None)
     if formulario.is_valid():
-        formulario.save()
         return redirect('inicio')
-    return render(request, 'informes/crear.html', {'formulario': formulario})
+    return render(request, 'informes/crear.html',{'formulario': formulario})
 
 def editar_in(request, id):
     informe = Informe.objects.get(id_informe=id)

@@ -34,7 +34,7 @@
                         <td> {{transportista.tipo_licencia}} </td>
                         <td> {{transportista.direccion}} </td>
                         <td>
-                            <a name="" id="" class="btn btn-info" href="{% url 'editar_tr' transportista.id_transportista %}" role="button">Editar</a>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editar_pe' transportista.id_persona.id_persona %}" role="button">Editar</a>
                             |
                             <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_tr' transportista.id_transportista %}" role="button">Borrar</a>
                         </td>

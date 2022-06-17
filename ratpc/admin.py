@@ -1,13 +1,13 @@
 from django.contrib import admin
-from .models import Libro, Vehiculo
+from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia, Usuario
 # Register your models here.
 
-class LibroAdmin(admin.ModelAdmin):
-    list_display = ("id","titulo")
-    list_filter = ("titulo",)
-    search_fields = ("id","titulo")
+class PersonaAdmin(admin.ModelAdmin):
+    list_display = ("identificacion","nombre_persona")
+    list_filter = ("id_nacionalidad",)
+    search_fields = ("identificacion","nombre_persona")
 
-admin.site.register(Libro, LibroAdmin)
+admin.site.register(Persona, PersonaAdmin)
 
 class VehiculoAdmin(admin.ModelAdmin):
     list_display = ("placa","modelo")
@@ -15,3 +15,11 @@ class VehiculoAdmin(admin.ModelAdmin):
     search_fields = ("id_vehiculo","placa")
 
 admin.site.register(Vehiculo, VehiculoAdmin)
+
+admin.site.register(Transportista)
+
+admin.site.register(Informe)
+
+admin.site.register(Mercaderia)
+
+admin.site.register(Usuario)

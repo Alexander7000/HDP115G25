@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de informes {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crear_in' %}" role="button">Agregar nuevo informe</a>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Informes</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo traslacion</th>
+                <th>Fecha</th>
+                <th>ID transportista</th>
+                <th>ID usuario</th>
+                <th>ID vehiculo</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for informe in informes%}
+                    <tr>
+                        <td> {{informe.id_informe}} </td>
+                        <td> {{informe.tipo_traslacion}} </td>
+                        <td> {{informe.fecha}} </td>
+                        <td> {{informe.id_transportista}} </td>
+                        <td> {{informe.id_usuario}} </td>
+                        <td> {{informe.id_vehiculo}} </td>
+                        <td>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editar_in' informe.id_informe %}" role="button">Editar</a>
+                            |
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_in' informe.id_informe %}" role="button">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{%endblock %}

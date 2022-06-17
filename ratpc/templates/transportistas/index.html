@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de transportistas {%endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">
+        <a name="" id="" class="btn btn-success" href="{% url 'crear_tr' %}" role="button">Agregar nuevo transportista</a>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Transportistas</h4>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha de nacimiento</th>
+                <th>Direccion</th>
+                <th>Tipo de licencia </th>
+                <th>ID persona</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for transportista in transportistas%}
+                    <tr>
+                        <td> {{transportista.id_transportista}} </td>
+                        <td> {{transportista.fecha_nacimiento}} </td>
+                        <td> {{transportista.direccion}} </td>
+                        <td> {{transportista.tipo_licencia}} </td>
+                        <td> {{transportista.id_persona_id}} </td>
+                        <td>
+                            <a name="" id="" class="btn btn-info" href="{% url 'editar_tr' transportista.id_transportista %}" role="button">Editar</a>
+                            |
+                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_tr' transportista.id_transportista %}" role="button">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{%endblock %}

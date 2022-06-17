@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
-{% block titulo %} Editar libro {%endblock %}
+{% block titulo %} Agregar nuevo usuario {%endblock %}
 
 {% block contenido %}
 
 <div class="card">
     <div class="card-header">
-        Editar informacion del libro
+        Crear un usuario
     </div>
     <div class="card-body">
-        <h4 class="card-title">Datos del libro</h4>
-        {% include 'libros/form.html' %}
+        <h4 class="card-title">Datos del usuario</h4>
+        {% include 'usuarios/form.html' %}
     </div>
     <div class="card-footer text-muted">
         Footer

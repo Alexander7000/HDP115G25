@@ -10,7 +10,7 @@ def inicio(request):
     return render(request, 'paginas/inicio.html')
 
 def salir(request):
-    return render(request, 'paginas/salir.html')
+    return render(request, 'paginas/agente.html')
 
 
 #personas
@@ -98,12 +98,14 @@ def eliminar_tr(request, id):
 #informe
 def informes(request):
     informes = Informe.objects.all()
+
     return render(request, 'informes/index.html', {'informes': informes})
 
 def crear_in(request):
     formulario = InformeForm(request.POST or None)
     if formulario.is_valid():
-        return redirect('inicio')
+        x = formulario.save()  # obtiene el objeto
+        return redirect('mercaderias', x.id_informe)
     return render(request, 'informes/crear.html',{'formulario': formulario})
 
 def editar_in(request, id):
@@ -121,16 +123,28 @@ def eliminar_in(request, id):
 
 
 #mercaderia
-def mercaderias(request):
-    mercaderias = Mercaderia.objects.all()
-    return render(request, 'mercaderias/index.html', {'mercaderias': mercaderias})
+def mercaderias(request, id):
+    informe = Informe.objects.get(id_informe=id)
 
-def crear_me(request):
+    mercaderias = informe.detalleMercaderia.all()
+
+    return render(request, 'mercaderias/index.html', {'mercaderias': mercaderias, 'id': id})
+
+def mercaderias2(request, id):
+    informe = Informe.objects.get(id_informe=id)
+
+    mercaderias = informe.detalleMercaderia.all()
+
+    return render(request, 'mercaderias/index2.html', {'mercaderias': mercaderias, 'id': id})
+
+def crear_me(request, id):
+    informe = Informe.objects.get(id_informe=id)
+
     formulario = MercaderiaForm(request.POST or None)
     if formulario.is_valid():
-        formulario.save()
-        return redirect('mercaderias')
-    return render(request, 'mercaderias/crear.html', {'formulario': formulario})
+        informe.detalleMercaderia.add(formulario.save())
+        return redirect('mercaderias', id)
+    return render(request, 'mercaderias/crear.html', {'formulario': formulario, 'id': id})
 
 def editar_me(request, id):
     mercaderia = Mercaderia.objects.get(id_mercaderia=id)
@@ -170,3 +184,9 @@ def eliminar_us(request, id):
     usuario = Usuario.objects.get(id_usuario=id)
     usuario.delete()
     return redirect('usuarios')
+
+#agente
+def agenteInfos(request):
+    informes = Informe.objects.all()
+
+    return render(request, 'paginas/agente.html', {'informes': informes})

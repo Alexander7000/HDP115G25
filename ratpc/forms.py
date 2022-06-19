@@ -37,13 +37,12 @@ class TransportistaForm(forms.ModelForm):
 class InformeForm(forms.ModelForm):
     class Meta:
         model = Informe
-        fields = ('id_usuario','id_transportista','id_vehiculo','tipo_traslacion','detalleMercaderia')
+        fields = ('id_usuario','id_transportista','id_vehiculo','tipo_traslacion')
 
         labels = {
             'id_transportista': _('Transportista ID'),
             'id_vehiculo': _('Vehiculo ID'),
             'tipo_traslacion': _('Tipo de traslacion'),
-            'detalleMercaderia': _('Mercancia'),
         }
 
 class MercaderiaForm(forms.ModelForm):

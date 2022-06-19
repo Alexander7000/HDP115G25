@@ -16,7 +16,7 @@ class Nacionalidad(models.Model):
 
 class Persona(models.Model):
     id_persona = models.AutoField(primary_key=True)
-    id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.CASCADE,
+    id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.PROTECT,
                                                       db_column='id_nacionalidad',
                                                       null=False, blank=False)
     identificacion = models.CharField(max_length=20, null=False, blank=False)
@@ -35,6 +35,7 @@ class Persona(models.Model):
 
 class Transportista(models.Model):
     id_transportista = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=False, blank=False)
     id_persona = models.OneToOneField(Persona, on_delete=models.CASCADE, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=False, blank=False)
     direccion = models.CharField(max_length=100, null=False, blank=False)
@@ -47,21 +48,10 @@ class Transportista(models.Model):
     def __str__(self):
         return self.id_persona.__str__()
 
-class Usuario(models.Model):
-    id_usuario = models.AutoField(primary_key=True)
-    id_persona = models.OneToOneField(Persona, on_delete=models.CASCADE, null=False, blank=False)
-    nombre_usuario = models.CharField(unique=True, max_length=50, null=False, blank=False)
-    clave = models.CharField(max_length=20, null=False, blank=False)
-    email = models.CharField(max_length=50, null=False, blank=False)
-    es_agente = models.BooleanField(null=False, blank=False)
-
-    class Meta:
-        db_table = 'usuario'
-
-
 class Vehiculo(models.Model):
     id_vehiculo = models.AutoField(primary_key=True)
-    id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.CASCADE,
+    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT, db_column='id_usuario', null=False, blank=False)
+    id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.PROTECT,
                                                       db_column='id_nacionalidad',
                                                       null=False, blank=False,)
     placa = models.CharField(max_length=10, null=False, blank=False)
@@ -94,16 +84,14 @@ class Mercaderia(models.Model):
 
 class Informe(models.Model):
     id_informe = models.AutoField(primary_key=True)
-    detalleMercaderia = models.ManyToManyField(Mercaderia)
-    id_transportista = models.ForeignKey(Transportista, on_delete=models.CASCADE,
+    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT, db_column='id_usuario', null=False, blank=False)
+    id_transportista = models.ForeignKey(Transportista, on_delete=models.PROTECT,
                                                         db_column='id_transportista',
                                                         null=False, blank=False)
-    id_vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE,
+    id_vehiculo = models.ForeignKey(Vehiculo, on_delete=models.PROTECT,
                                               db_column='id_vehiculo',
                                               null=False, blank=False)
-    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE,
-                                            db_column='id_usuario',
-                                            null=False, blank=False)
+    detalleMercaderia = models.ManyToManyField(Mercaderia)
     tipo_traslacion = models.CharField(max_length=20, null=False, blank=False)
     fecha = models.DateField(auto_now_add=True)
 

@@ -1,9 +1,13 @@
+from builtins import print
+
 from django.shortcuts import render, redirect
-from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia, Usuario
-from .forms import PersonaForm, VehiculoForm, TransportistaForm, InformeForm, MercaderiaForm, UsuarioForm, LoginForm
+from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia
+from .forms import PersonaForm, VehiculoForm, TransportistaForm, InformeForm, MercaderiaForm, LoginForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password
+
 # Create your views here.
 
 # acceso a los archivos (paginas)
@@ -50,14 +54,17 @@ def eliminar_pe(request, id):
 #vehiculoss
 @login_required
 def vehiculos(request):
-    vehiculos = Vehiculo.objects.all()
+    vehiculos = Vehiculo.objects.filter(id_usuario = request.user.id)
     return render(request, 'vehiculos/index.html', {'vehiculos': vehiculos})
 
 @login_required
 def crear_ve(request):
     formulario = VehiculoForm(request.POST or None)
     if formulario.is_valid():
-        formulario.save()
+        vehiculo = formulario.save(commit=False)
+        user = User.objects.get(id=request.user.id)
+        vehiculo.id_usuario = user
+        vehiculo.save()
         return redirect('vehiculos')
     return render(request, 'vehiculos/crear.html', {'formulario': formulario})
 
@@ -80,7 +87,7 @@ def eliminar_ve(request, id):
 #transportista
 @login_required
 def transportistas(request):
-    transportistas = Transportista.objects.all()
+    transportistas = Transportista.objects.filter(id_usuario = request.user.id)
     return render(request, 'transportistas/index.html', {'transportistas': transportistas})
 
 @login_required
@@ -88,9 +95,11 @@ def crear_tr(request, id):
     formulario = TransportistaForm(request.POST or None)
     if formulario.is_valid():
         persona = Persona.objects.get(id_persona=id)
-        transaportista = formulario.save(commit=False)
-        transaportista.id_persona = persona
-        transaportista.save()
+        user = User.objects.get(id=request.user.id)
+        transportista = formulario.save(commit=False)
+        transportista.id_persona = persona
+        transportista.id_usuario = user
+        transportista.save()
         return redirect('transportistas')
     return render(request, 'transportistas/crear.html', {'formulario': formulario})
 
@@ -114,15 +123,19 @@ def eliminar_tr(request, id):
 #informe
 @login_required
 def informes(request):
-    informes = Informe.objects.all()
-
+    informes = Informe.objects.filter(id_usuario = request.user.id)
     return render(request, 'informes/index.html', {'informes': informes})
 
 @login_required
 def crear_in(request):
     formulario = InformeForm(request.POST or None)
+    formulario.fields['id_transportista'].queryset = Transportista.objects.filter(id_usuario = request.user.id)
+    formulario.fields['id_vehiculo'].queryset = Vehiculo.objects.filter(id_usuario = request.user.id)
     if formulario.is_valid():
-        x = formulario.save()  # obtiene el objeto
+        x = formulario.save(commit=False)
+        user = User.objects.get(id=request.user.id)
+        x.id_usuario = user
+        x.save()
         return redirect('mercaderias', x.id_informe)
     return render(request, 'informes/crear.html',{'formulario': formulario})
 
@@ -160,6 +173,14 @@ def mercaderias2(request, id):
     return render(request, 'mercaderias/index2.html', {'mercaderias': mercaderias, 'id': id})
 
 @login_required
+def mercaderias3(request, id):
+    informe = Informe.objects.get(id_informe=id)
+
+    mercaderias = informe.detalleMercaderia.all()
+
+    return render(request, 'mercaderias/index3.html', {'mercaderias': mercaderias, 'id': id})
+
+@login_required
 def crear_me(request, id):
     informe = Informe.objects.get(id_informe=id)
     formulario = MercaderiaForm(request.POST or None)
@@ -169,57 +190,26 @@ def crear_me(request, id):
     return render(request, 'mercaderias/crear.html', {'formulario': formulario, 'id': id})
 
 @login_required
-def editar_me(request, id):
-    mercaderia = Mercaderia.objects.get(id_mercaderia=id)
+def editar_me(request, idInforme ,idMercaderia):
+    mercaderia = Mercaderia.objects.get(id_mercaderia=idMercaderia)
     formulario = MercaderiaForm(request.POST or None, instance=mercaderia)
     if formulario.is_valid() and request.POST:
         formulario.save()
-        return redirect('mercaderias')
-    return render(request, 'mercaderias/editar.html', {'formulario': formulario})
+        return redirect('mercaderias', idInforme)
+    return render(request, 'mercaderias/editar.html', {'formulario': formulario, 'id': idInforme})
 
 @login_required
-def eliminar_me(request, id):
-    mercaderia = Mercaderia.objects.get(id_mercaderia=id)
+def eliminar_me(request, idInforme ,idMercaderia):
+    mercaderia = Mercaderia.objects.get(id_mercaderia=idMercaderia)
     mercaderia.delete()
-    return redirect('mercaderias')
+    return redirect('mercaderias', idInforme)
 
-
-#usuario
-@login_required
-def usuarios(request):
-    usuarios = Usuario.objects.all()
-    return render(request, 'usuarios/index.html', {'usuarios': usuarios})
-
-@login_required()
-def crear_us(request):
-    formulario = UsuarioForm(request.POST or None)
-    if formulario.is_valid():
-        formulario.save()
-        return redirect('usuarios')
-    return render(request, 'usuarios/crear.html', {'formulario': formulario})
-
-@login_required
-def editar_us(request, id):
-    usuario = Usuario.objects.get(id_usuario=id)
-    formulario = UsuarioForm(request.POST or None, instance=usuario)
-    if formulario.is_valid() and request.POST:
-        formulario.save()
-        return redirect('usuarios')
-    return render(request, 'usuarios/editar.html', {'formulario': formulario})
-
-@login_required
-def eliminar_us(request, id):
-    usuario = Usuario.objects.get(id_usuario=id)
-    usuario.delete()
-    return redirect('usuarios')
 
 #agente
 @login_required
 def agenteInfos(request):
     informes = Informe.objects.all()
-
     return render(request, 'paginas/agente.html', {'informes': informes})
-
 
 def salir(request):
     logout(request)

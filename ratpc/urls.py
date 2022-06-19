@@ -1,6 +1,5 @@
 ﻿from django.urls import path, include
 from . import views
-from django.contrib.auth.views import LoginView
 
 # enlaces para mostrar las vistas (URLS)
 
@@ -30,14 +29,10 @@ urlpatterns = [
 
     path('mercaderias/<int:id>', views.mercaderias, name='mercaderias'),
     path('mercaderias2/<int:id>', views.mercaderias2, name='mercaderias2'),
+    path('mercaderias3/<int:id>', views.mercaderias3, name='mercaderias3'),
     path('mercaderias/crear/<int:id>', views.crear_me, name='crear_me'),
-    path('mercaderias/<int:id>', views.eliminar_me, name='eliminar_me'),
-    path('mercaderias/editar/<int:id>', views.editar_me, name='editar_me'),
-
-    path('usuarios', views.usuarios, name='usuarios'),
-    path('usuarios/crear', views.crear_us, name='crear_us'),
-    path('usuarios/<int:id>', views.eliminar_us, name='eliminar_us'),
-    path('usuarios/editar/<int:id>', views.editar_us, name='editar_us'),
+    path('mercaderias/<int:idInforme>/<int:idMercaderia>', views.eliminar_me, name='eliminar_me'),
+    path('mercaderias/editar/<int:idInforme>/<int:idMercaderia>', views.editar_me, name='editar_me'),
 
     path('registrar', views.crear_log, name='registrar'),
     path('accounts/',include('django.contrib.auth.urls')),

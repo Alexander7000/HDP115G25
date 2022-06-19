@@ -2,11 +2,9 @@ from apt.progress.text import _
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia, Usuario
+from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia
 
 class LoginForm(forms.ModelForm):
-
-
     class Meta:
         model = User
         fields = ('first_name','last_name', 'email','username','password')
@@ -32,7 +30,7 @@ class PersonaForm(forms.ModelForm):
 class VehiculoForm(forms.ModelForm):
     class Meta:
         model = Vehiculo
-        fields = '__all__'
+        fields = ('placa', 'id_nacionalidad', 'modelo', 'ano','cant_asientos', 'color')
         labels = {
             'id_nacionalidad': _('Nacionalidad'),
             'ano': _('Año'),
@@ -50,10 +48,11 @@ class TransportistaForm(forms.ModelForm):
             'tipo_licencia': _('Tipo de licencia'),
         }
 
+
 class InformeForm(forms.ModelForm):
     class Meta:
         model = Informe
-        fields = ('id_usuario','id_transportista','id_vehiculo','tipo_traslacion')
+        fields = ('id_transportista','id_vehiculo','tipo_traslacion')
 
         labels = {
             'id_transportista': _('Transportista ID'),
@@ -64,9 +63,4 @@ class InformeForm(forms.ModelForm):
 class MercaderiaForm(forms.ModelForm):
     class Meta:
         model = Mercaderia
-        fields = '__all__'
-
-class UsuarioForm(forms.ModelForm):
-    class Meta:
-        model = Usuario
         fields = '__all__'

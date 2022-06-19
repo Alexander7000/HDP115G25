@@ -1,14 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia, Usuario
-from .forms import PersonaForm, VehiculoForm, TransportistaForm, InformeForm, MercaderiaForm, UsuarioForm
-from django.contrib.auth.views import LoginView
+from .forms import PersonaForm, VehiculoForm, TransportistaForm, InformeForm, MercaderiaForm, UsuarioForm, LoginForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-#para el registrar usuario
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import  UserCreationForm
-from django.views.generic import CreateView
-
+from django.contrib.auth.hashers import make_password
 # Create your views here.
 
 # acceso a los archivos (paginas)
@@ -229,3 +224,13 @@ def agenteInfos(request):
 def salir(request):
     logout(request)
     return redirect('/')
+
+def crear_log(request):
+    formulario = LoginForm(request.POST or None)
+    if formulario.is_valid():
+            super = formulario.save(commit=False)
+            super.es_agente = False
+            super.password = make_password(super.password)
+            super.save()
+            return redirect('inicio')
+    return render(request, 'registration/form.html', {'formulario': formulario})

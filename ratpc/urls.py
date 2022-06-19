@@ -39,7 +39,7 @@ urlpatterns = [
     path('usuarios/<int:id>', views.eliminar_us, name='eliminar_us'),
     path('usuarios/editar/<int:id>', views.editar_us, name='editar_us'),
 
-
+    path('registrar', views.crear_log, name='registrar'),
     path('accounts/',include('django.contrib.auth.urls')),
     path('salir/', views.salir , name = 'salir')
 ]

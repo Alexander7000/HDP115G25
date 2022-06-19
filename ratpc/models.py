@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Nacionalidad(models.Model):
     id_nacionalidad = models.AutoField(primary_key=True, verbose_name='Nacionalidad')

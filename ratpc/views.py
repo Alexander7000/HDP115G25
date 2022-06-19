@@ -88,12 +88,8 @@ def transportistas(request):
     transportistas = Transportista.objects.all()
     return render(request, 'transportistas/index.html', {'transportistas': transportistas})
 
-<<<<<<< HEAD
 @login_required
-def crear_tr(request):
-=======
 def crear_tr(request, id):
->>>>>>> main
     formulario = TransportistaForm(request.POST or None)
     if formulario.is_valid():
         persona = Persona.objects.get(id_persona=id)
@@ -152,15 +148,7 @@ def eliminar_in(request, id):
 
 
 #mercaderia
-<<<<<<< HEAD
 @login_required
-def mercaderias(request):
-    mercaderias = Mercaderia.objects.all()
-    return render(request, 'mercaderias/index.html', {'mercaderias': mercaderias})
-
-@login_required
-def crear_me(request):
-=======
 def mercaderias(request, id):
     informe = Informe.objects.get(id_informe=id)
 
@@ -168,6 +156,7 @@ def mercaderias(request, id):
 
     return render(request, 'mercaderias/index.html', {'mercaderias': mercaderias, 'id': id})
 
+@login_required
 def mercaderias2(request, id):
     informe = Informe.objects.get(id_informe=id)
 
@@ -175,10 +164,9 @@ def mercaderias2(request, id):
 
     return render(request, 'mercaderias/index2.html', {'mercaderias': mercaderias, 'id': id})
 
+@login_required
 def crear_me(request, id):
     informe = Informe.objects.get(id_informe=id)
-
->>>>>>> main
     formulario = MercaderiaForm(request.POST or None)
     if formulario.is_valid():
         informe.detalleMercaderia.add(formulario.save())
@@ -230,15 +218,14 @@ def eliminar_us(request, id):
     usuario.delete()
     return redirect('usuarios')
 
-<<<<<<< HEAD
-def salir(request):
-    logout(request)
-    return redirect('/')
-
-=======
 #agente
+@login_required
 def agenteInfos(request):
     informes = Informe.objects.all()
 
     return render(request, 'paginas/agente.html', {'informes': informes})
->>>>>>> main
+
+
+def salir(request):
+    logout(request)
+    return redirect('/')

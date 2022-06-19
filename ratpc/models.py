@@ -1,11 +1,12 @@
 from django.db import models
 
 class Nacionalidad(models.Model):
-    id_nacionalidad = models.AutoField(primary_key=True)
+    id_nacionalidad = models.AutoField(primary_key=True, verbose_name='Nacionalidad')
     nombre_nacion = models.CharField(max_length=30, null=False, blank=False)
 
     class Meta:
         db_table = 'nacionalidad'
+        ordering = ["nombre_nacion"]
 
     def __str__(self):
         return self.nombre_nacion
@@ -26,6 +27,9 @@ class Persona(models.Model):
         db_table = 'persona'
         unique_together = (('id_nacionalidad', 'identificacion'),)
 
+    def __str__(self):
+        return self.identificacion + " - " + self.id_nacionalidad.__str__() + " - " + self.nombre_persona + ", " + self.apellido
+
 
 class Transportista(models.Model):
     id_transportista = models.AutoField(primary_key=True)
@@ -36,7 +40,10 @@ class Transportista(models.Model):
 
     class Meta:
         db_table = 'transportista'
+        ordering = ["id_transportista"]
 
+    def __str__(self):
+        return self.id_persona.__str__()
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
@@ -44,7 +51,7 @@ class Usuario(models.Model):
     nombre_usuario = models.CharField(unique=True, max_length=50, null=False, blank=False)
     clave = models.CharField(max_length=20, null=False, blank=False)
     email = models.CharField(max_length=50, null=False, blank=False)
-    es_agente = models.BooleanField(null=False, blank=False, default=False)
+    es_agente = models.BooleanField(null=False, blank=False)
 
     class Meta:
         db_table = 'usuario'
@@ -54,7 +61,7 @@ class Vehiculo(models.Model):
     id_vehiculo = models.AutoField(primary_key=True)
     id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.CASCADE,
                                                       db_column='id_nacionalidad',
-                                                      null=False, blank=False)
+                                                      null=False, blank=False,)
     placa = models.CharField(max_length=10, null=False, blank=False)
     modelo = models.CharField(max_length=50, null=False, blank=False)
     ano = models.IntegerField(null=False, blank=False)
@@ -67,11 +74,25 @@ class Vehiculo(models.Model):
         ordering = ["id_vehiculo"]
 
     def __str__(self):
-        return 'id: %s, nombre: %s' % (self.id_vehiculo, self.placa)
+        return self.placa + " - " + self.modelo + " - " + self.id_nacionalidad.__str__()
 
+class Mercaderia(models.Model):
+    id_mercaderia = models.AutoField(primary_key=True)
+    nombre_mercaderia = models.CharField(max_length=50, null=False, blank=False)
+    categoria = models.CharField(max_length=20, null=False, blank=False)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
+    procedencia = models.CharField(max_length=50, null=False, blank=False)
+
+    class Meta:
+        db_table = 'mercaderia'
+        ordering = ["id_mercaderia"]
+
+    def __str__(self):
+        return self.nombre_mercaderia + " (" + str(self.cantidad) + ")"
 
 class Informe(models.Model):
     id_informe = models.AutoField(primary_key=True)
+    detalleMercaderia = models.ManyToManyField(Mercaderia)
     id_transportista = models.ForeignKey(Transportista, on_delete=models.CASCADE,
                                                         db_column='id_transportista',
                                                         null=False, blank=False)
@@ -86,15 +107,4 @@ class Informe(models.Model):
 
     class Meta:
         db_table = 'informe'
-
-
-class Mercaderia(models.Model):
-    id_mercaderia = models.AutoField(primary_key=True)
-    detalleMercaderia = models.ManyToManyField(Informe)
-    nombre_mercaderia = models.CharField(max_length=50, null=False, blank=False)
-    categoria = models.CharField(max_length=20, null=False, blank=False)
-    cantidad = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
-    procedencia = models.CharField(max_length=50, null=False, blank=False)
-
-    class Meta:
-        db_table = 'mercaderia'
+        ordering = ["id_informe"]

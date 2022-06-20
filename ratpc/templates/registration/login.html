@@ -4,54 +4,59 @@
 
 {% block contenido %}
 
+<div class="jumbotron jumbotron-fluid text-center">
+	<h1 class="display-3">Registro aduanal</h1>
+	<hr class="my-3">
+	<br>
 
+	<div class="container-fluid">
+		<div class="row align-items-center justify-content-center">
+			<div class="col-5 col-md-5 ">
+				<div class="card text-white bg-dark mb-2 text-center" style="max-width: 30rem;">
+					<div class="card-header">
+						<h5 class="card-title">Iniciar Sesión </h5>
+					</div>
 
-            <div class="container">
-           <div class="card text-white bg-dark mb-3 text-center" style="max-width: 35rem;">
-                <div class="card-header">
-                    <h5 class="card-title">Iniciar Sesión </h5>
-                </div>
-                <div class="card-body">
+					<div class="card-body">
+						<form method="post">
+							{% csrf_token %}
 
-    <div class="card-body">
-	<form method="post">
-		{% csrf_token %}
-		 <div class="row">
-			<div class="col-md col-md-offset ">
-				<div class="form-group">
-					<label for="username">Nombre de usuario:</label>
-					<input class="form-control" type="text" name="username">
-			   </div>
+							<label for="username">Nombre de usuario:</label>
+
+							<input class="form-control" type="text" name="username">
+
+							<br>
+
+							<label for="username">Contraseña:</label>
+
+							<input class="form-control" type="password" name="password">
+							<br>
+							<tr>
+								<td>
+									{% if form.non_field_errors %}
+										{% for error in form.non_field_errors %}
+											<p class="text-danger">{{ error }}</p>
+										{% endfor %}
+									{% endif %}
+								</td>
+							</tr>
+
+							<br>
+
+							<td>
+								<input class="btn btn-primary" type="submit" value="Ingresar">
+							</td>
+
+							 &nbsp &nbsp &nbsp
+
+							<td>
+								<a name="" id="" class="btn btn-secondary" href="{% url 'registrar'%}" role="button">Registrarse</a>
+							</td>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md col-md-offset">
-				<div class="form-group">
-					<label for="username">Contraseña:</label>
-					<input class="form-control" type="password" name="password">
-			   </div>
-				 {% if form.non_field_errors %}
-            	{% for error in form.non_field_errors %}
-                <p class="text-danger">{{ error }}</p>
-           		 {% endfor %}
-     			 {% endif %}
-
-
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md col-md-offset">
-				<div class="form-group">
-					<input class="btn btn-primary" type="submit" value="Ingresar">
-			   </div>
-			</div>
-		</div>
-	</form>
-
-	<a name="" id="" class="btn btn-secondary" href="{% url 'registrar'%}" role="button">Registrarse</a>
-
+	</div>
+</div>
 {% endblock %}
-</div>
-</div>
-			</div>
-</div>

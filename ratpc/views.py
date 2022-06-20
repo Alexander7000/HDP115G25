@@ -13,8 +13,10 @@ from django.contrib.auth.hashers import make_password
 # paginas del sitio
 @login_required
 def inicio(request):
-    es_agente = request.user.is_staff
-    return render(request, 'paginas/inicio.html', {'es_agente': es_agente})
+    if request.user.is_staff:
+        return redirect('agente')
+
+    return render(request, 'paginas/inicio.html',)
 
 def salir(request):
     return render(request, 'paginas/agente.html')

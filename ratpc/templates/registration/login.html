@@ -4,10 +4,20 @@
 
 {% block contenido %}
 
+
+
+            <div class="container">
+           <div class="card text-white bg-dark mb-3 text-center" style="max-width: 35rem;">
+                <div class="card-header">
+                    <h5 class="card-title">Iniciar Sesión </h5>
+                </div>
+                <div class="card-body">
+
+    <div class="card-body">
 	<form method="post">
 		{% csrf_token %}
 		 <div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md col-md-offset ">
 				<div class="form-group">
 					<label for="username">Nombre de usuario:</label>
 					<input class="form-control" type="text" name="username">
@@ -15,15 +25,22 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md col-md-offset">
 				<div class="form-group">
 					<label for="username">Contraseña:</label>
 					<input class="form-control" type="password" name="password">
 			   </div>
+				 {% if form.non_field_errors %}
+            	{% for error in form.non_field_errors %}
+                <p class="text-danger">{{ error }}</p>
+           		 {% endfor %}
+     			 {% endif %}
+
+
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md col-md-offset">
 				<div class="form-group">
 					<input class="btn btn-primary" type="submit" value="Ingresar">
 			   </div>
@@ -34,3 +51,7 @@
 	<a name="" id="" class="btn btn-secondary" href="{% url 'registrar'%}" role="button">Registrarse</a>
 
 {% endblock %}
+</div>
+</div>
+			</div>
+</div>

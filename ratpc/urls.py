@@ -7,18 +7,13 @@ urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('agente', views.agenteInfos, name='agente'),
 
-    path('personas', views.personas, name='personas'),
-    path('personas/crear', views.crear_pe, name='crear_pe'),
-    path('personas/<int:id>', views.eliminar_pe, name='eliminar_pe'),
-    path('personas/editar/<int:id>', views.editar_pe, name='editar_pe'),
-
     path('vehiculos', views.vehiculos, name='vehiculos'),
     path('vehiculos/crear', views.crear_ve, name='crear_ve'),
     path('vehiculos/<int:id>', views.eliminar_ve, name='eliminar_ve'),
     path('vehiculos/editar/<int:id>', views.editar_ve, name='editar_ve'),
 
     path('transportistas', views.transportistas, name='transportistas'),
-    path('transportistas/crear/<int:id>', views.crear_tr, name='crear_tr'),
+    path('transportistas/crear', views.crear_tr, name='crear_tr'),
     path('transportistas/<int:id>', views.eliminar_tr, name='eliminar_tr'),
     path('transportistas/editar/<int:id>', views.editar_tr, name='editar_tr'),
 

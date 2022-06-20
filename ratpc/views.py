@@ -1,8 +1,6 @@
-from builtins import print
-
 from django.shortcuts import render, redirect
-from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia
-from .forms import PersonaForm, VehiculoForm, TransportistaForm, InformeForm, MercaderiaForm, LoginForm
+from .models import Vehiculo, Transportista, Informe, Mercaderia
+from .forms import VehiculoForm, TransportistaForm, TransportistaForm2,InformeForm, MercaderiaForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -15,41 +13,11 @@ from django.contrib.auth.hashers import make_password
 # paginas del sitio
 @login_required
 def inicio(request):
-    return render(request, 'paginas/inicio.html')
+    es_agente = request.user.is_staff
+    return render(request, 'paginas/inicio.html', {'es_agente': es_agente})
 
 def salir(request):
     return render(request, 'paginas/agente.html')
-
-
-#personas
-@login_required
-def personas(request):
-    personas = Persona.objects.all()
-    return render(request, 'personas/index.html', {'personas': personas})
-
-@login_required
-def crear_pe(request):
-    formulario = PersonaForm(request.POST or None)
-    if formulario.is_valid():
-        x = formulario.save() #obtiene el objeto
-        return redirect('crear_tr', x.id_persona)
-    return render(request, 'personas/crear.html', {'formulario': formulario})
-
-@login_required
-def editar_pe(request, id):
-    persona = Persona.objects.get(id_persona=id)
-    formulario = PersonaForm(request.POST or None, instance=persona)
-    if formulario.is_valid() and request.POST:
-        formulario.save()
-        return redirect('editar_tr',id)
-    return render(request, 'personas/editar.html', {'formulario': formulario})
-
-@login_required
-def eliminar_pe(request, id):
-    persona = Persona.objects.get(id_persona=id)
-    persona.delete()
-    return redirect('transportistas')
-
 
 #vehiculoss
 @login_required
@@ -91,22 +59,22 @@ def transportistas(request):
     return render(request, 'transportistas/index.html', {'transportistas': transportistas})
 
 @login_required
-def crear_tr(request, id):
-    formulario = TransportistaForm(request.POST or None)
+def crear_tr(request):
+    formulario = TransportistaForm(request.user.id, request.POST or None)
+
     if formulario.is_valid():
-        persona = Persona.objects.get(id_persona=id)
-        user = User.objects.get(id=request.user.id)
         transportista = formulario.save(commit=False)
-        transportista.id_persona = persona
+        user = User.objects.get(id=request.user.id)
         transportista.id_usuario = user
         transportista.save()
         return redirect('transportistas')
+
     return render(request, 'transportistas/crear.html', {'formulario': formulario})
 
 @login_required
 def editar_tr(request, id):
-    transportista = Transportista.objects.get(id_persona=id)
-    formulario = TransportistaForm(request.POST or None, instance=transportista)
+    transportista = Transportista.objects.get(id_transportista=id)
+    formulario = TransportistaForm2(request.POST or None, instance=transportista)
     if formulario.is_valid() and request.POST:
         formulario.save()
         return redirect('transportistas')
@@ -115,9 +83,8 @@ def editar_tr(request, id):
 @login_required
 def eliminar_tr(request, id):
     transportista = Transportista.objects.get(id_transportista=id)
-    id = transportista.id_persona
     transportista.delete()
-    return redirect('eliminar_pe', id.id_persona)
+    return redirect('transportistas')
 
 
 #informe

@@ -2,7 +2,7 @@ from apt.progress.text import _
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import Persona, Vehiculo, Transportista, Informe, Mercaderia
+from .models import Vehiculo, Transportista, Informe, Mercaderia
 
 class LoginForm(forms.ModelForm):
     class Meta:
@@ -13,18 +13,6 @@ class LoginForm(forms.ModelForm):
             'last_name': _('Apellidos'),
             'email': _('Correo electronico'),
             'password': _('Contraseña'),
-        }
-
-
-class PersonaForm(forms.ModelForm):
-    class Meta:
-        model = Persona
-        fields = '__all__'
-        labels = {
-            'id_nacionalidad': _('Nacionalidad'),
-            'tipo_identificacion': _('Tipo de identificacion'),
-            'nombre_persona': _('Nombres'),
-            'apellido': _('Apellidos'),
         }
 
 class VehiculoForm(forms.ModelForm):
@@ -40,10 +28,49 @@ class VehiculoForm(forms.ModelForm):
         }
 
 class TransportistaForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.id_usuario = user
+        print(self.id_usuario)
+        super(TransportistaForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super(TransportistaForm, self).clean()
+        identificacion = cleaned_data.get('identificacion')
+        id_nacionalidad = cleaned_data.get('id_nacionalidad')
+        id_usuario = self.id_usuario
+        print(identificacion)
+        print(id_nacionalidad)
+        print(id_usuario)
+        if (Transportista.objects.filter(identificacion=identificacion).exists() and
+            Transportista.objects.filter(id_nacionalidad=id_nacionalidad).exists() and
+            Transportista.objects.filter(id_usuario=id_usuario).exists()):
+            raise forms.ValidationError('Ya hay un registro con esta Identificacion y Nacionalidad')
+
     class Meta:
         model = Transportista
-        fields = ('fecha_nacimiento','direccion','tipo_licencia')
+        fields = ('id_nacionalidad', 'identificacion', 'tipo_identificacion', 'tipo_licencia',
+                  'nombre_persona', 'apellido', 'telefono', 'fecha_nacimiento', 'direccion')
+
         labels = {
+            'id_nacionalidad': _('Nacionalidad'),
+            'tipo_identificacion': _('Tipo de identificacion'),
+            'nombre_persona': _('Nombres'),
+            'apellido': _('Apellidos'),
+            'fecha_nacimiento': _('Fecha de nacimiento'),
+            'tipo_licencia': _('Tipo de licencia'),
+        }
+
+class TransportistaForm2(forms.ModelForm):
+    class Meta:
+        model = Transportista
+        fields = ('id_nacionalidad', 'identificacion', 'tipo_identificacion', 'tipo_licencia',
+                  'nombre_persona', 'apellido', 'telefono', 'fecha_nacimiento', 'direccion')
+
+        labels = {
+            'id_nacionalidad': _('Nacionalidad'),
+            'tipo_identificacion': _('Tipo de identificacion'),
+            'nombre_persona': _('Nombres'),
+            'apellido': _('Apellidos'),
             'fecha_nacimiento': _('Fecha de nacimiento'),
             'tipo_licencia': _('Tipo de licencia'),
         }

@@ -14,39 +14,29 @@ class Nacionalidad(models.Model):
         return self.nombre_nacion
 
 
-class Persona(models.Model):
-    id_persona = models.AutoField(primary_key=True)
+class Transportista(models.Model):
+    id_transportista = models.AutoField(primary_key=True)
+    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=False, blank=False)
     id_nacionalidad = models.ForeignKey(Nacionalidad, on_delete=models.PROTECT,
-                                                      db_column='id_nacionalidad',
-                                                      null=False, blank=False)
+                                        db_column='id_nacionalidad',
+                                        null=False, blank=False)
     identificacion = models.CharField(max_length=20, null=False, blank=False)
     tipo_identificacion = models.CharField(max_length=50, null=False, blank=False)
     nombre_persona = models.CharField(max_length=50, null=False, blank=False)
     apellido = models.CharField(max_length=50, null=False, blank=False)
     telefono = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        db_table = 'persona'
-        unique_together = (('id_nacionalidad', 'identificacion'),)
-
-    def __str__(self):
-        return self.identificacion + " - " + self.id_nacionalidad.__str__() + " - " + self.nombre_persona + ", " + self.apellido
-
-
-class Transportista(models.Model):
-    id_transportista = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=False, blank=False)
-    id_persona = models.OneToOneField(Persona, on_delete=models.CASCADE, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=False, blank=False)
     direccion = models.CharField(max_length=100, null=False, blank=False)
     tipo_licencia = models.CharField(max_length=30, null=False, blank=False)
 
     class Meta:
         db_table = 'transportista'
+        unique_together = (('id_usuario', 'id_nacionalidad', 'identificacion'),)
         ordering = ["id_transportista"]
 
     def __str__(self):
-        return self.id_persona.__str__()
+        return self.identificacion + " - " + self.id_nacionalidad.__str__() + " - " + self.nombre_persona + ", " + self.apellido
+
 
 class Vehiculo(models.Model):
     id_vehiculo = models.AutoField(primary_key=True)
@@ -68,6 +58,7 @@ class Vehiculo(models.Model):
     def __str__(self):
         return self.placa + " - " + self.modelo + " - " + self.id_nacionalidad.__str__()
 
+
 class Mercaderia(models.Model):
     id_mercaderia = models.AutoField(primary_key=True)
     nombre_mercaderia = models.CharField(max_length=50, null=False, blank=False)
@@ -81,6 +72,7 @@ class Mercaderia(models.Model):
 
     def __str__(self):
         return self.nombre_mercaderia + " (" + str(self.cantidad) + ")"
+
 
 class Informe(models.Model):
     id_informe = models.AutoField(primary_key=True)

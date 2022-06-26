@@ -2,6 +2,48 @@
 
 {% block titulo %} Lista de mercaderias {%endblock %}
 
+{% block js %}
+
+    <script>
+        function eliminarMercaderia(id_m) {
+            Swal.fire({
+                "title": "Estas seguro?",
+                "text": "Esta accion no se puede deshacer",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "No, Cancelar",
+                "confirmButtonText": "Si, Eliminar",
+                "confirmButtonColor": "#dc3545"
+            })
+            .then(function(result) {
+                if(result.isConfirmed) {
+                    window.location.href = "{% url 'mercaderias' id %}/"+id_m
+                }
+            })
+        }
+    </script>
+
+    <script>
+        function enviarFormulario() {
+            Swal.fire({
+                "title": "Estas seguro?",
+                "text": "El formulario solo se puede enviar una vez y no es posible su modificacion",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "No, Cancelar",
+                "confirmButtonText": "Si, Enviar",
+                "confirmButtonColor": "#dc3545"
+            })
+            .then(function(result) {
+                if(result.isConfirmed) {
+                    window.location.href = "{% url 'inicio' %}"
+                }
+            })
+        }
+    </script>
+
+{% endblock %}
+
 {% block contenido %}
 
 <div class="card">
@@ -29,9 +71,9 @@
                         <td> {{mercaderia.cantidad}} </td>
                         <td> {{mercaderia.procedencia}} </td>
                         <td>
-                            <a name="" id="" class="btn btn-info" href="{% url 'editar_me' id mercaderia.id_mercaderia %}" role="button">Editar</a>
+                            <a class="btn btn-info" href="{% url 'editar_me' id mercaderia.id_mercaderia %}" role="button">Editar</a>
                             |
-                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_me' id mercaderia.id_mercaderia %}" role="button">Borrar</a>
+                            <a onclick="eliminarMercaderia({{ mercaderia.id_mercaderia }})" class="btn btn-danger" href="#" role="button">Borrar</a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -40,7 +82,7 @@
     </div>
 
     <div class="card-footer text-muted">
-        <a name="" id="" class="btn btn-info" href="{% url 'inicio' %}" role="button">Enviar formulario</a>
+        <a onclick="enviarFormulario()" class="btn btn-info" href="#" role="button">Enviar formulario</a>
     </div>
 
 </div>

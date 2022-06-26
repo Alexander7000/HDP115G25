@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password
+from django.contrib import messages
 
 # Create your views here.
 
@@ -16,7 +17,8 @@ def inicio(request):
     if request.user.is_staff:
         return redirect('agente')
 
-    return render(request, 'paginas/inicio.html',)
+    nom = request.user
+    return render(request, 'paginas/inicio.html', {'nom': nom})
 
 def salir(request):
     return render(request, 'paginas/agente.html')
@@ -35,6 +37,8 @@ def crear_ve(request):
         user = User.objects.get(id=request.user.id)
         vehiculo.id_usuario = user
         vehiculo.save()
+        messages.success (request, "Se agrego el vehiculo exitosamente!")
+
         return redirect('vehiculos')
     return render(request, 'vehiculos/crear.html', {'formulario': formulario})
 
@@ -44,13 +48,20 @@ def editar_ve(request, id):
     formulario = VehiculoForm(request.POST or None, instance=vehiculo)
     if formulario.is_valid() and request.POST:
         formulario.save()
+        messages.success(request, "Se han almacenado las modificaciones exitosamente!")
         return redirect('vehiculos')
     return render(request, 'vehiculos/editar.html', {'formulario': formulario})
 
 @login_required
 def eliminar_ve(request, id):
-    vehiculo = Vehiculo.objects.get(id_vehiculo=id)
-    vehiculo.delete()
+    if Informe.objects.filter(id_vehiculo=id):
+        messages.error(request, "Este vehiculo esta ligado a un informe por lo que no se puede eliminar")
+    else:
+        vehiculo = Vehiculo.objects.get(id_vehiculo=id)
+        temp = vehiculo.placa
+        vehiculo.delete()
+        messages.success (request, "Se ha eliminado el vehiculo con placa: " + temp)
+
     return redirect('vehiculos')
 
 
@@ -69,6 +80,7 @@ def crear_tr(request):
         user = User.objects.get(id=request.user.id)
         transportista.id_usuario = user
         transportista.save()
+        messages.success(request, "Se agrego el transportista exitosamente!")
         return redirect('transportistas')
 
     return render(request, 'transportistas/crear.html', {'formulario': formulario})
@@ -79,13 +91,20 @@ def editar_tr(request, id):
     formulario = TransportistaForm2(request.POST or None, instance=transportista)
     if formulario.is_valid() and request.POST:
         formulario.save()
+        messages.success(request, "Se han almacenado las modificaciones exitosamente!")
         return redirect('transportistas')
     return render(request, 'transportistas/editar.html', {'formulario': formulario})
 
 @login_required
 def eliminar_tr(request, id):
-    transportista = Transportista.objects.get(id_transportista=id)
-    transportista.delete()
+    if Informe.objects.filter(id_transportista=id):
+        messages.error(request, "Este transportista esta ligado a un informe por lo que no se puede eliminar")
+    else:
+        transportista = Transportista.objects.get(id_transportista=id)
+        temp =transportista.identificacion
+        transportista.delete()
+        messages.success (request, "Se ha eliminado el transportista con identificacion: " + temp)
+
     return redirect('transportistas')
 
 
@@ -155,6 +174,7 @@ def crear_me(request, id):
     formulario = MercaderiaForm(request.POST or None)
     if formulario.is_valid():
         informe.detalleMercaderia.add(formulario.save())
+        messages.success(request, "Se agrego la mercaderia exitosamente!")
         return redirect('mercaderias', id)
     return render(request, 'mercaderias/crear.html', {'formulario': formulario, 'id': id})
 
@@ -164,6 +184,7 @@ def editar_me(request, idInforme ,idMercaderia):
     formulario = MercaderiaForm(request.POST or None, instance=mercaderia)
     if formulario.is_valid() and request.POST:
         formulario.save()
+        messages.success(request, "Se han almacenado las modificaciones exitosamente!")
         return redirect('mercaderias', idInforme)
     return render(request, 'mercaderias/editar.html', {'formulario': formulario, 'id': idInforme})
 
@@ -171,6 +192,7 @@ def editar_me(request, idInforme ,idMercaderia):
 def eliminar_me(request, idInforme ,idMercaderia):
     mercaderia = Mercaderia.objects.get(id_mercaderia=idMercaderia)
     mercaderia.delete()
+    messages.success(request, "Se ha eliminado la mercaderia")
     return redirect('mercaderias', idInforme)
 
 
@@ -191,5 +213,6 @@ def crear_log(request):
             super.es_agente = False
             super.password = make_password(super.password)
             super.save()
+            messages.success(request, "Su usuario se a registrado correctamente")
             return redirect('inicio')
     return render(request, 'registration/form.html', {'formulario': formulario})

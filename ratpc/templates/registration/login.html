@@ -31,17 +31,6 @@
 
 							<input class="form-control" type="password" name="password">
 							<br>
-							<tr>
-								<td>
-									{% if form.non_field_errors %}
-										{% for error in form.non_field_errors %}
-											<p class="text-danger">{{ error }}</p>
-										{% endfor %}
-									{% endif %}
-								</td>
-							</tr>
-
-							<br>
 
 							<td>
 								<input class="btn btn-primary" type="submit" value="Ingresar">

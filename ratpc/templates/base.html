@@ -20,7 +20,7 @@
         </div>
 
         <div class="navbar-nav ml-auto">
-            <a class=" nav-item nav-link active" href="{% url 'salir' %}">Salir</a>
+            <a onclick="salir()" class=" nav-item nav-link active" href="#">Salir</a>
         </div>
     </nav>
 
@@ -34,6 +34,7 @@
     </div>
 
 <!-- Optional JavaScript -->
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -44,5 +45,40 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+            Swal.fire({
+                "title": "Aviso",
+                "text": "{{m}}",
+                "icon": "{{m.tags}}"
+            })
+            </script>
+        {% endfor %}
+    {% endif %}
+
+    {% block js %}
+    {% endblock %}
+
+<script>
+        function salir() {
+            Swal.fire({
+                "title": "Estas seguro de cerrar la sesion?",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "No, Cancelar",
+                "confirmButtonText": "Si, Salir",
+                "confirmButtonColor": "#dc3545"
+            })
+            .then(function(result) {
+                if(result.isConfirmed) {
+                    window.location.href = "{% url 'salir' %}"
+                }
+            })
+        }
+</script>
+
 </body>
 </html>

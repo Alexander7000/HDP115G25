@@ -2,6 +2,29 @@
 
 {% block titulo %} Lista de transportistas {%endblock %}
 
+{% block js %}
+
+    <script>
+        function eliminarTransportista(id) {
+            Swal.fire({
+                "title": "Estas seguro?",
+                "text": "Esta accion no se puede deshacer",
+                "icon": "question",
+                "showCancelButton": true,
+                "cancelButtonText": "No, Cancelar",
+                "confirmButtonText": "Si, Eliminar",
+                "confirmButtonColor": "#dc3545"
+            })
+            .then(function(result) {
+                if(result.isConfirmed) {
+                    window.location.href = "{% url 'transportistas' %}/"+id
+                }
+            })
+        }
+    </script>
+
+{% endblock %}
+
 {% block contenido %}
 
 <div class="card">
@@ -34,9 +57,9 @@
                         <td> {{transportista.tipo_licencia}} </td>
                         <td> {{transportista.direccion}} </td>
                         <td>
-                            <a name="" id="" class="btn btn-info" href="{% url 'editar_tr' transportista.id_transportista %}" role="button">Editar</a>
+                            <a class="btn btn-info" href="{% url 'editar_tr' transportista.id_transportista %}" role="button">Editar</a>
                             |
-                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_tr' transportista.id_transportista %}" role="button">Borrar</a>
+                            <a href="#" onclick="eliminarTransportista({{ transportista.id_transportista }})" class="btn btn-danger" role="button">Borrar</a>
                         </td>
                     </tr>
                 {% endfor %}

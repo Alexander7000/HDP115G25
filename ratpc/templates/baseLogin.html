@@ -46,5 +46,34 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+            Swal.fire({
+                "title": "Aviso",
+                "text": "{{m}}",
+                "icon": "{{m.tags}}"
+            })
+            </script>
+        {% endfor %}
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <script>
+			    Swal.fire({
+					"title": "Aviso",
+					"text": "{{ error }}",
+					"icon": "error"
+				})
+			</script>
+        {% endfor %}
+    {% endif %}
+
+    {% block js %}
+    {% endblock %}
+
 </body>
 </html>

@@ -52,7 +52,7 @@ class Vehiculo(models.Model):
 
     class Meta:
         db_table = 'vehiculo'
-        unique_together = (('id_nacionalidad', 'placa'),)
+        unique_together = (('id_usuario','id_nacionalidad', 'placa'),)
         ordering = ["id_vehiculo"]
 
     def __str__(self):

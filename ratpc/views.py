@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Vehiculo, Transportista, Informe, Mercaderia
-from .forms import VehiculoForm, TransportistaForm, TransportistaForm2,InformeForm, MercaderiaForm, LoginForm
+from .forms import VehiculoForm, VehiculoForm2,TransportistaForm, TransportistaForm2,InformeForm, MercaderiaForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -31,7 +31,8 @@ def vehiculos(request):
 
 @login_required
 def crear_ve(request):
-    formulario = VehiculoForm(request.POST or None)
+    formulario = VehiculoForm(request.user.id, request.POST or None)
+
     if formulario.is_valid():
         vehiculo = formulario.save(commit=False)
         user = User.objects.get(id=request.user.id)
@@ -45,7 +46,7 @@ def crear_ve(request):
 @login_required
 def editar_ve(request, id):
     vehiculo = Vehiculo.objects.get(id_vehiculo=id)
-    formulario = VehiculoForm(request.POST or None, instance=vehiculo)
+    formulario = VehiculoForm2(request.POST or None, instance=vehiculo)
     if formulario.is_valid() and request.POST:
         formulario.save()
         messages.success(request, "Se han almacenado las modificaciones exitosamente!")

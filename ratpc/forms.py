@@ -16,6 +16,36 @@ class LoginForm(forms.ModelForm):
         }
 
 class VehiculoForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        self.id_usuario = user
+        print(self.id_usuario)
+        super(VehiculoForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super(VehiculoForm, self).clean()
+        placa = cleaned_data.get('placa')
+        id_nacionalidad = cleaned_data.get('id_nacionalidad')
+        id_usuario = self.id_usuario
+        print(placa)
+        print(id_nacionalidad)
+        print(id_usuario)
+        if (Vehiculo.objects.filter(placa=placa).exists() and
+            Vehiculo.objects.filter(id_nacionalidad=id_nacionalidad).exists() and
+            Vehiculo.objects.filter(id_usuario=id_usuario).exists()):
+            raise forms.ValidationError('Ya hay un registro con esta Placa y Nacionalidad')
+
+    class Meta:
+        model = Vehiculo
+        fields = ('placa', 'id_nacionalidad', 'modelo', 'ano','cant_asientos', 'color')
+        labels = {
+            'id_nacionalidad': _('Nacionalidad'),
+            'ano': _('Año'),
+            'modelo': _('Marca - Modelo'),
+            'cant_asientos': _('Cantidad de asientos'),
+            'color': _('Colores del vehiculo'),
+        }
+
+class VehiculoForm2(forms.ModelForm):
     class Meta:
         model = Vehiculo
         fields = ('placa', 'id_nacionalidad', 'modelo', 'ano','cant_asientos', 'color')
@@ -53,6 +83,7 @@ class TransportistaForm(forms.ModelForm):
 
         labels = {
             'id_nacionalidad': _('Nacionalidad'),
+            'identificacion': _('N° Identificacion'),
             'tipo_identificacion': _('Tipo de identificacion'),
             'nombre_persona': _('Nombres'),
             'apellido': _('Apellidos'),
